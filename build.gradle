@@ -5,7 +5,6 @@ buildscript {
         junitVersion = '4.12'
         mockitoVersion = '1.10.19'
         sentryVersion = '1.7.10'
-        springBootRedisVersion = '2.2.1.RELEASE'
         springBootVersion = '1.5.12.RELEASE'
         jacksonDatatypeVersion = '2.9.0'
         retrofitVersion = '2.4.0'
@@ -44,10 +43,8 @@ repositories {
 dependencies {
     compile "io.sentry:sentry-logback:${sentryVersion}"
     compile "org.codehaus.janino:janino:${janinoVersion}"
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: "${springBootRedisVersion}"
-    compile "org.springframework.boot:spring-boot-starter-data:${springBootVersion}"
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: "${springBootVersion}"
     compile "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
     compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonDatatypeVersion}"
-    compile "redis.client:jedis:${jedisVersion}"
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
