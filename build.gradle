@@ -1,0 +1,53 @@
+buildscript {
+    ext {
+        gradleDockerVersion = '1.2'
+        janinoVersion = '3.0.7'
+        junitVersion = '4.12'
+        mockitoVersion = '1.10.19'
+        sentryVersion = '1.7.10'
+        springBootRedisVersion = '2.2.1.RELEASE'
+        springBootVersion = '1.5.12.RELEASE'
+        jacksonDatatypeVersion = '2.9.0'
+        retrofitVersion = '2.4.0'
+        retrofitOkhttpVersion = '3.10.0' //ensure this is compatible with retrofit 2
+        queryDslVersion='4.2.1'
+        jedisVersion = '3.1.0'
+    }
+
+    repositories {
+        mavenCentral()
+        maven { url "https://repo.spring.io/snapshot" }
+        maven { url "https://repo.spring.io/milestone" }
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath "se.transmode.gradle:gradle-docker:${gradleDockerVersion}"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath("com.ewerk.gradle.plugins.querydsl:com.ewerk.gradle.plugins.querydsl.gradle.plugin:1.0.10")
+    }
+}
+
+
+plugins {
+    id 'java'
+}
+
+group 'com.github.yafithekid'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "io.sentry:sentry-logback:${sentryVersion}"
+    compile "org.codehaus.janino:janino:${janinoVersion}"
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: "${springBootRedisVersion}"
+    compile "org.springframework.boot:spring-boot-starter-data:${springBootVersion}"
+    compile "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+    compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonDatatypeVersion}"
+    compile "redis.client:jedis:${jedisVersion}"
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
