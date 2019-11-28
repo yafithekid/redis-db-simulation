@@ -1,6 +1,7 @@
 package com.github.yafithekid.redisdbsimulation;
 
 import com.github.yafithekid.redisdbsimulation.repository.QuotaRepository;
+import com.github.yafithekid.redisdbsimulation.service.BenchmarkType;
 import com.github.yafithekid.redisdbsimulation.service.RequestSimulationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,30 +32,43 @@ public class TestController {
         this.redisTemplate = redisTemplate;
     }
 
-    @GetMapping("/redis/test")
+    @GetMapping("/redis/test-direct")
     public String testRedis(){
-        requestSimulationService.benchmarkRedis();
+        requestSimulationService.benchmark(BenchmarkType.REDIS_DIRECT);
         return "ok";
     }
 
-    @GetMapping("/pgsql/test")
+    @GetMapping("/redis/test-indirect")
+    public String testRedisV2(){
+        requestSimulationService.benchmark(BenchmarkType.REDIS_CACHED);
+        return "ok";
+    }
+
+    @GetMapping("/pgsql/test-direct")
     public String testPsql(){
-        requestSimulationService.benchmarkPostgres();
+        requestSimulationService.benchmark(BenchmarkType.POSTGRES);
+        return "ok";
+    }
+
+    @GetMapping("/pgsql/test-indirect")
+    public String testPsqlIndirect(){
+        requestSimulationService.benchmark(BenchmarkType.POSTGRESQL_CACHED);
         return "ok";
     }
 
     @RequestMapping("/pgsql/insert")
     public String insertPostgres(){
-        for(int i = 0; i < N_APP; i++){
-            Quota quota = quotaRepository.findOne(i);
-            if (quota == null){
-                quota = new Quota();
-                quota.setId(i);
-            }
-            quota.setNcount(0);
-            quotaRepository.save(quota);
-            System.out.println("set pgsql app_id="+i+" to "+0);
-        }
+        requestSimulationService.resetPgsql();
+//        for(int i = 0; i < N_APP; i++){
+//            Quota quota = quotaRepository.findOne(i);
+//            if (quota == null){
+//                quota = new Quota();
+//                quota.setId(i);
+//            }
+//            quota.setNcount(0);
+//            quotaRepository.save(quota);
+//            System.out.println("set pgsql app_id="+i+" to "+0);
+//        }
         return "";
     }
 

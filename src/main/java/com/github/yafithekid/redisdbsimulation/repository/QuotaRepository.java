@@ -15,6 +15,14 @@ public interface QuotaRepository extends JpaRepository<Quota,Integer> {
     @Transactional
     void incrementQuota(@Param("id") int id);
 
+    @Modifying
+    @Query(value = "UPDATE quotas SET ncount = 0",nativeQuery = true)
+    @Transactional
+    void resetQuota();
+
+
+    Quota findById(int id);
+
     boolean existsByIdAndNcountLessThanEqual(int id,int ncount);
 
 }
